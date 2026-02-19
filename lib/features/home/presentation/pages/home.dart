@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:segments_clean_arch/features/home/presentation/provider/segment_provider.dart';
+import 'package:segments_clean_arch/features/no_internet.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});
@@ -26,6 +27,12 @@ class _HomeState extends ConsumerState<Home> {
       appBar: AppBar(title: const Text('Segments')),
       body: segmentData.isLoading
           ? const Center(child: CircularProgressIndicator())
+          : segmentData.isNoInternet
+          ? NoInternet(
+              onRetry: () {
+                ref.read(segmentsProvider.notifier).fetchSegments();
+              },
+            )
           : segmentData.error != null
           ? Center(
               child: Column(

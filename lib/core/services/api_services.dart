@@ -1,11 +1,9 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 import 'package:segments_clean_arch/core/services/network_service.dart';
-import 'package:segments_clean_arch/features/no_internet.dart';
-import 'package:segments_clean_arch/main.dart';
+import 'package:segments_clean_arch/core/utils/exceptions.dart';
 
 class ApiServices {
   static final Dio _dio = Dio(
@@ -48,14 +46,7 @@ class ApiServices {
   ) async {
     final hasInternet = await NetworkService().hasInternetConnection;
     if (!hasInternet) {
-      final result = await navigatorKey.currentState?.push(
-        MaterialPageRoute(builder: (context) => const NoInternet()),
-      );
-
-      if (result == true) {
-        return _handleRequest(request);
-      }
-      return null;
+      throw const NoInternetException();
     }
 
     try {

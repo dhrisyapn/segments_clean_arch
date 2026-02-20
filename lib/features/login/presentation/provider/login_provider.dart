@@ -26,6 +26,7 @@ class LoginDataNotifier extends StateNotifier<LoginData> {
     try {
       final loginResponse = await _useCase.login(mobile, password, countryCode);
       state = state.copyWith(loginData: loginResponse, isLoading: false);
+      SnackbarService.showSuccess('Login successful');
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
       String errorMessage = 'An error occurred';

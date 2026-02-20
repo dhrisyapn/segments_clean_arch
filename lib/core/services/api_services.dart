@@ -56,29 +56,28 @@ class ApiServices {
     } on DioException catch (e) {
       log(e.response?.data.toString() ?? e.message ?? 'Unknown DioError');
       if (e.response != null) {
-        return e.response?.data;
-        //_showError(e.response?.data);
+        throw e.response?.data;
       } else {
-        // _showSnackbar(e.message ?? 'Something went wrong');
+        throw 'Something went wrong.';
       }
-      return null;
     } catch (e) {
       log(e.toString());
-      //_showSnackbar('An unexpected error occurred');
-      return null;
+
+      throw e.toString();
     }
   }
-
-  static void _showError(dynamic data) {
-    if (data is Map<String, dynamic> &&
-        (data.containsKey('error') || data.containsKey('message'))) {
-      final message = data['error'] ?? data['message'];
-      if (message is List) {
-        if (message.isNotEmpty) {}
-      } else {}
-    } else {}
-  }
 }
+
+  // static void _showError(dynamic data) {
+  //   if (data is Map<String, dynamic> &&
+  //       (data.containsKey('error') || data.containsKey('message'))) {
+  //     final message = data['error'] ?? data['message'];
+  //     if (message is List) {
+  //       if (message.isNotEmpty) {}
+  //     } else {}
+  //   } else {}
+  // }
+
 //}
 
 /*

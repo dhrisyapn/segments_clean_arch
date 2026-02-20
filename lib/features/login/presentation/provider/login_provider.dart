@@ -1,4 +1,5 @@
 import 'package:riverpod/legacy.dart';
+import 'package:segments_clean_arch/core/services/snackbar_service.dart';
 import 'package:segments_clean_arch/features/login/data/data_source/login_data_source_impl.dart';
 import 'package:segments_clean_arch/features/login/data/repository/login_repository_impl.dart';
 import 'package:segments_clean_arch/features/login/domain/entity/login_response_entity.dart';
@@ -16,12 +17,9 @@ final loginDataProvider = StateNotifierProvider<LoginDataNotifier, LoginData>((
 class LoginDataNotifier extends StateNotifier<LoginData> {
   final LoginUsecase _useCase;
 
-  LoginDataNotifier({
-    required LoginUsecase useCase,
-  }) // Dependency injection of the use case
-  : _useCase = useCase,
-       super(LoginData(loginData: LoginResponseEntity()));
-  // Initial state with default login data
+  LoginDataNotifier({required LoginUsecase useCase})
+    : _useCase = useCase,
+      super(LoginData(loginData: LoginResponseEntity()));
 
   Future<void> login(String mobile, String password, String countryCode) async {
     state = state.copyWith(isLoading: true, error: null);
@@ -30,6 +28,13 @@ class LoginDataNotifier extends StateNotifier<LoginData> {
       state = state.copyWith(loginData: loginResponse, isLoading: false);
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
+      String errorMessage = 'An error occurred';
+      if (e is Map && (e.containsKey('message') || e.containsKey('error'))) {
+        errorMessage = e['message'] ?? e['error'] ?? errorMessage;
+      } else if (e is Exception) {
+        errorMessage = e.toString();
+      }
+      SnackbarService.showError(errorMessage);
     }
   }
 }

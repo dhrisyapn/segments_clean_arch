@@ -1,6 +1,6 @@
 import 'package:riverpod/legacy.dart';
 
-import 'package:segments_clean_arch/core/utils/exceptions.dart';
+import 'package:segments_clean_arch/core/utils/failure.dart';
 import 'package:segments_clean_arch/features/home/data/data_sources/user_auth_datasource_impl.dart';
 import 'package:segments_clean_arch/features/home/data/repositories/user_auth_repository_impl.dart';
 import 'package:segments_clean_arch/features/home/domain/entities/segment_response_entity.dart';
@@ -25,16 +25,22 @@ class SegmentDataNotifier extends StateNotifier<SegmentData> {
        super(
          SegmentData(segments: []),
        ); //Initial state with empty segments list and loading true
-  //The provider calls the use case and stores returned data in state. If it throws, error is set instead.
+  //The provider calls the use case and stores returned data in state.
+  //Uses Either.fold() for functional error handling instead of try/catch.
   Future<void> fetchSegments() async {
     state = state.copyWith(isLoading: true, error: null, isNoInternet: false);
-    try {
-      final segments = await _useCase.getSegments();
-      state = state.copyWith(segments: segments, isLoading: false);
-    } on NoInternetException {
-      state = state.copyWith(isLoading: false, isNoInternet: true);
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
+    final result = await _useCase.getSegments();
+    result.fold(
+      (failure) {
+        if (failure is NetworkFailure) {
+          state = state.copyWith(isLoading: false, isNoInternet: true);
+        } else {
+          state = state.copyWith(isLoading: false, error: failure.message);
+        }
+      },
+      (segments) {
+        state = state.copyWith(segments: segments, isLoading: false);
+      },
+    );
   }
 }

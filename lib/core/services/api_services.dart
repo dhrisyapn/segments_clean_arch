@@ -74,37 +74,10 @@ class ApiServices {
         (data.containsKey('error') || data.containsKey('message'))) {
       final message = data['error'] ?? data['message'];
       if (message is List) {
-        if (message.isNotEmpty) {
-          // _showSnackbar(message.first.toString());
-        }
-      } else {
-        //  _showSnackbar(message.toString());
-      }
-    } else {
-      //  _showSnackbar('An error occurred');
-    }
+        if (message.isNotEmpty) {}
+      } else {}
+    } else {}
   }
-
-  // static void _showSnackbar(String message) {
-  // scaffoldMessengerKey.currentState?.showSnackBar(
-  //   SnackBar(
-  //     content: Text(
-  //       message,
-  //       textAlign: TextAlign.center,
-  //       style: GoogleFonts.onest(
-  //         color: Colors.white,
-  //         fontSize: 14.sp,
-  //         fontWeight: FontWeight.w500,
-  //       ),
-  //     ),
-  //     backgroundColor: Colors.red,
-  //     duration: const Duration(seconds: 3),
-  //     elevation: 1,
-  //     margin: EdgeInsets.all(16.0),
-  //     behavior: SnackBarBehavior.floating,
-  //     dismissDirection: DismissDirection.horizontal,
-  //   ),
-  // );
 }
 //}
 

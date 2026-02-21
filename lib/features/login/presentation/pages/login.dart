@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:segments_clean_arch/core/services/snackbar_service.dart';
 
 import 'package:segments_clean_arch/features/login/presentation/provider/login_provider.dart';
 
@@ -52,8 +53,16 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () async {
-                    final phone = _phoneNumber.text;
-                    final password = _passwordController.text;
+                    final phone = _phoneNumber.text.trim();
+                    final password = _passwordController.text.trim();
+
+                    if (phone.isEmpty || password.isEmpty) {
+                      SnackbarService.showError(
+                        'Please fill all the text fields',
+                      );
+                      return;
+                    }
+
                     final countryCode = '+91';
                     await ref
                         .read(loginDataProvider.notifier)

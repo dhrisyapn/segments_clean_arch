@@ -29,13 +29,8 @@ class LoginDataNotifier extends StateNotifier<LoginData> {
       SnackbarService.showSuccess('Login successful');
     } catch (e) {
       state = state.copyWith(error: e.toString(), isLoading: false);
-      String errorMessage = 'An error occurred';
-      if (e is Map && (e.containsKey('message') || e.containsKey('error'))) {
-        errorMessage = e['message'] ?? e['error'] ?? errorMessage;
-      } else if (e is Exception) {
-        errorMessage = e.toString();
-      }
-      SnackbarService.showError(errorMessage);
+
+      SnackbarService.showError(e.toString());
     }
   }
 }

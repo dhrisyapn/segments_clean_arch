@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:segments_clean_arch/features/home/presentation/pages/home.dart';
 
 import 'package:segments_clean_arch/features/login/presentation/pages/login.dart';
 import 'package:segments_clean_arch/core/utils/app_keys.dart';
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: Login(),
+      home: Home(),
     );
   }
 }

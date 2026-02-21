@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:riverpod/legacy.dart';
 
 import 'package:segments_clean_arch/core/utils/failure.dart';
@@ -36,6 +38,7 @@ class SegmentDataNotifier extends StateNotifier<SegmentData> {
           state = state.copyWith(isLoading: false, isNoInternet: true);
         } else {
           state = state.copyWith(isLoading: false, error: failure.message);
+          log('Error fetching segments: ${failure.message}');
         }
       },
       (segments) {

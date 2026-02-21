@@ -13,15 +13,15 @@ class UserAuthDataSourceImpl implements UserAuthDataSource {
       queryParameters: {'client_id': '21'},
     );
     log(data.toString());
-    if (data is List) {
+
+    try {
       final List<SegmentResponseEntity> segments = data
           .map((e) => SegmentResponseModel.fromJson(e as Map<String, dynamic>))
           .toList();
       log(segments.toString());
       return segments;
-    } else if (data is Map && data.containsKey('error')) {
-      throw Exception(data['error'] ?? 'Unknown API error');
+    } catch (e) {
+      throw (e.toString());
     }
-    return [];
   }
 }

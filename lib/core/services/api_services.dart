@@ -56,7 +56,7 @@ class ApiServices {
     } on DioException catch (e) {
       log(e.response?.data.toString() ?? e.message ?? 'Unknown DioError');
       if (e.response != null) {
-        throw e.response?.data;
+        throw e.response?.data['error'] ?? e.response?.data['message'];
       } else {
         throw 'Something went wrong.';
       }

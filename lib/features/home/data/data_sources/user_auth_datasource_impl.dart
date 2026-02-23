@@ -15,7 +15,7 @@ class UserAuthDataSourceImpl implements UserAuthDataSource {
     log(data.toString());
 
     try {
-      final List<SegmentResponseEntity> segments = data
+      final List<SegmentResponseEntity> segments = (data as List)
           .map((e) => SegmentResponseModel.fromJson(e as Map<String, dynamic>))
           .toList();
       log(segments.toString());

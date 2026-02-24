@@ -4,6 +4,7 @@ import 'package:segments_clean_arch/features/home/presentation/pages/home.dart';
 
 import 'package:segments_clean_arch/features/login/presentation/pages/login.dart';
 import 'package:segments_clean_arch/core/utils/app_keys.dart';
+import 'package:segments_clean_arch/features/signup/presentation/page/signup.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: Home(),
+      home: Signup(),
     );
   }
 }

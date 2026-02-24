@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:segments_clean_arch/features/home/presentation/pages/home.dart';
 
@@ -8,7 +9,9 @@ import 'package:segments_clean_arch/features/signup/presentation/page/signup.dar
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   runApp(ProviderScope(child: const MyApp()));
 }
 

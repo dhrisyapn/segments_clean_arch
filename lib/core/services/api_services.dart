@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 
 import 'package:segments_clean_arch/core/services/network_service.dart';
+import 'package:segments_clean_arch/core/utils/app_env.dart';
 import 'package:segments_clean_arch/core/utils/exceptions.dart';
 
 class ApiServices {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'https://api.elearning.alpha.logidots.com/api',
+      baseUrl: AppEnv.baseUrl,
       headers: {'Accept': 'application/json', 'X-App-Type': 'learner'},
       validateStatus: (status) {
         return status != null && (status == 200 || status == 201);

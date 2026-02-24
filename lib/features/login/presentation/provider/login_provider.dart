@@ -1,5 +1,6 @@
 import 'package:riverpod/legacy.dart';
 import 'package:segments_clean_arch/core/services/snackbar_service.dart';
+import 'package:segments_clean_arch/core/utils/failure.dart';
 import 'package:segments_clean_arch/features/login/data/data_source/login_data_source_impl.dart';
 import 'package:segments_clean_arch/features/login/data/repository/login_repository_impl.dart';
 import 'package:segments_clean_arch/features/login/domain/entity/login_response_entity.dart';
@@ -22,15 +23,23 @@ class LoginDataNotifier extends StateNotifier<LoginData> {
       super(LoginData(loginData: LoginResponseEntity()));
 
   Future<void> login(String mobile, String password, String countryCode) async {
-    state = state.copyWith(isLoading: true, error: null);
-    try {
-      final loginResponse = await _useCase.login(mobile, password, countryCode);
-      state = state.copyWith(loginData: loginResponse, isLoading: false);
-      SnackbarService.showSuccess('Login successful');
-    } catch (e) {
-      state = state.copyWith(error: e.toString(), isLoading: false);
+    state = state.copyWith(isLoading: true, error: null, isNoInternet: false);
 
-      SnackbarService.showError(e.toString());
-    }
+    final result = await _useCase.login(mobile, password, countryCode);
+
+    result.fold(
+      (failure) {
+        if (failure is NetworkFailure) {
+          state = state.copyWith(isLoading: false, isNoInternet: true);
+        } else {
+          state = state.copyWith(error: failure.message, isLoading: false);
+          SnackbarService.showError(failure.message);
+        }
+      },
+      (loginResponse) {
+        state = state.copyWith(loginData: loginResponse, isLoading: false);
+        SnackbarService.showSuccess('Login successful');
+      },
+    );
   }
 }

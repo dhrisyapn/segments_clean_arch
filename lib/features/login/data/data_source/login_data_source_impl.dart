@@ -26,13 +26,10 @@ class LoginDataSourceImpl implements LoginDataSource {
       },
     );
 
-    if (response != null && response is Map<String, dynamic>) {
-      if (response.containsKey('error')) {
-        throw Exception(response['error'] ?? 'Unknown API error');
-      }
+    try {
       return LoginResponseModel.fromJson(response);
-    } else {
-      throw Exception('Failed to login: Invalid response');
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

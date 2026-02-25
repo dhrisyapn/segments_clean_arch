@@ -12,7 +12,6 @@ class UserAuthDataSourceImpl implements UserAuthDataSource {
       '/v2/segments',
       queryParameters: {'client_id': '21'},
     );
-    log(data.toString());
 
     try {
       final List<SegmentResponseEntity> segments = (data as List)

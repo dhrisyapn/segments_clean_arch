@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import 'package:segments_clean_arch/core/services/network_service.dart';
@@ -15,7 +13,7 @@ class ApiServices {
         return status != null && (status == 200 || status == 201);
       },
     ),
-  );
+  )..interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
 
   static Future<dynamic> get(
     String endpoint, {
@@ -52,18 +50,14 @@ class ApiServices {
 
     try {
       final response = await request();
-      log(response.data.toString());
       return response.data;
     } on DioException catch (e) {
-      log(e.response?.data.toString() ?? e.message ?? 'Unknown DioError');
       if (e.response != null) {
         throw e.response?.data['error'] ?? e.response?.data['message'];
       } else {
         throw 'Something went wrong.';
       }
     } catch (e) {
-      log(e.toString());
-
       throw e.toString();
     }
   }

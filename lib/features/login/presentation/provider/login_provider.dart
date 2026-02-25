@@ -1,5 +1,4 @@
 import 'package:riverpod/legacy.dart';
-import 'package:segments_clean_arch/core/services/snackbar_service.dart';
 import 'package:segments_clean_arch/core/utils/failure.dart';
 import 'package:segments_clean_arch/features/login/data/data_source/login_data_source_impl.dart';
 import 'package:segments_clean_arch/features/login/data/repository/login_repository_impl.dart';
@@ -33,12 +32,10 @@ class LoginDataNotifier extends StateNotifier<LoginData> {
           state = state.copyWith(isLoading: false, isNoInternet: true);
         } else {
           state = state.copyWith(error: failure.message, isLoading: false);
-          SnackbarService.showError(failure.message);
         }
       },
       (loginResponse) {
         state = state.copyWith(loginData: loginResponse, isLoading: false);
-        SnackbarService.showSuccess('Login successful');
       },
     );
   }

@@ -67,6 +67,15 @@ class _LoginState extends State<Login> {
                     await ref
                         .read(loginDataProvider.notifier)
                         .login(phone, password, countryCode);
+
+                    if (!context.mounted) return;
+
+                    final state = ref.read(loginDataProvider);
+                    if (state.error != null) {
+                      SnackbarService.showError(state.error.toString());
+                    } else if (!state.isNoInternet) {
+                      SnackbarService.showSuccess('Login successful');
+                    }
                   },
                   child: const Text('Login'),
                 ),
